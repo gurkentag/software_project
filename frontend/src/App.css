@@ -1,0 +1,68 @@
+.App {
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+}
+
+.App-header {
+    padding: 10px;
+    box-shadow: 0 1px 22px 0 rgba(50, 50, 50, 0.75);
+    width: 100%;
+}
+
+.header {
+    color: rgb(19, 129, 58);
+}
+#button1{
+    margin: 10px;
+}
+#button2{
+    margin: 10px;
+}
+
+.main-container {
+    width: 80%;
+    border-color: black;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 30px;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.graph-container {
+    width: 65%;
+    margin: auto;
+    min-width: 30rem;
+}
+
+.delete-button {
+    padding: 1px !important;
+    margin: 2px !important;
+    margin-left: 5px !important;
+}
+
+.sequenzContainer {
+    border-radius: 10px;
+    border-color: black;
+    margin: auto;
+    margin-top: 20px;
+    background: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 70%;
+    padding: 20px;
+}
+
+.devicebadge {
+    margin: 12px;
+}
+
+.dropdown-menu {
+    height: 200px;
+    overflow-y: scroll;
+}

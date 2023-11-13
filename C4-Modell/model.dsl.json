@@ -1,0 +1,98 @@
+workspace {
+
+    model {
+        user = person "Analyst" "Analyst möchte Energiedaten ansehen."
+        admin = person "Admin" "Admin managed die Software, passt das Speicherlimt der Datenbank an und Pflegt die Software."
+        softwareSystem = softwareSystem "Greensoft System" "System für die Analyse und Aufbereitung von Energiedaten" "Greensoft"{
+        
+            webapp = container "Web Applikation" "React App zur grafischen Aufarbeitung von Messdaten." "ReactJS" "Frontend"{
+                
+                
+            }
+            webpage = container "Webseite" "Stellt die Daten dem User zur Verfügung / Stellt die Daten Graphisch da" "HTML/CSS" "Webpage" {
+                webapp -> this "stellt Webseite zur Verfügung mit HTML/CSS"
+                user  -> this "Verwendet / Schaut unter Verwendungs eines Webbrowsers"
+            }
+            
+            backend = container "API-Applikation"  "Container zur Bereitstellung, Verarbeitung und Aufarbeitung von Messdaten" "Flask" "Backend" {
+                flapp = component "Flask App" "Flask basierte Python Applikation zur Bereitstellung einer RESTful API" "Python: Flask" "Flask_App" {
+                    webapp -> this "Greift via HTTP bzw. in Form von JSON auf REST API zu"
+                }
+                ingest = component "Datenbank Ingest" "Komponente für die (Langzeit-)Speicherung von Messdaten" "Python" "Datenbank_Ingest"
+                messdaten = component "Berechnung Komponente""Komponente die auf den Daten der Datenbank berechungen und Messdaten erstellt" "Python" "messdaten"
+
+            }
+            db = container "Datenbank" "SQL-Datenbank speichert Messungen und Statistische Werte die Berchnet werden" "MariaDB" "db" {
+                flapp -> this "Ruft Messdaten via SQL Query ab"
+                ingest -> this "Speichert empfangene Messdaten ab"
+                messdaten -> this "Greift auf Daten zu und berechnet Messdaten die wieder in der DB gespeichert werden" 
+                admin -> this "Managed / Behebt fehler / Passt speicher limt an"
+            }
+        }
+        mqttBroker = softwareSystem "MQTT Broker" "Broker verteilt Messungen an zuhörende Systeme" "MQTT_Broker"{
+            ingest -> this "Subscribed in Messungstopics, um Messungen zu erhalten"
+        }
+
+    }
+
+    views {
+        systemContext softwareSystem "SystemContext" {
+            include *
+            autolayout
+        }
+        container softwareSystem "ContainerContext" {
+            include *
+            autoLayout
+        }
+        component backend "ComponentContext" {
+            include *
+            autoLayout
+        }
+
+        styles {
+            element "MQTT_Broker" {
+                background #CCCDD3
+                color #000000
+            }
+            element "Backend" {
+                background #000000
+                color #ffffff
+            }
+            element "Frontend" {
+                background #000000
+                color #ffffff
+            }
+            element "Greensoft" {
+                background #000000
+                color #ffffff
+            }
+            element "Flask_App" {
+                background #000000
+                color #ffffff
+            }
+            element "Datenbank_Ingest" {
+                background #000000
+                color #ffffff
+            }
+            element "messdaten" {
+                background #000000
+                color #ffffff
+            }
+            element "Webpage" {
+                shape WebBrowser
+                background #000000
+                color #ffffff
+            }
+            element "Person" {
+                shape person
+                background #08427a
+                color #ffffff
+            }
+            element "db" {
+                shape Cylinder
+                background #000000
+                color #ffffff
+            }
+        }
+    }
+} 

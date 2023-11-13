@@ -1,0 +1,38 @@
+---
+version: "3"
+services:
+  router:
+    image: traefik:v2.9
+    command: --api.insecure=true --providers.docker --entrypoints.web.address=:80
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  frontend:
+    image: mowoe/swt7-frontend:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)  && !PathPrefix(`/api`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+  backend:
+    image: mowoe/swt7-backend:latest
+    healthcheck:
+      disable: true
+    environment:
+      - MQTT_CLIENT_ID=SwtpGruppe7
+      - MQTT_USERNAME=swtp22
+      - MQTT_PASSWORD=0jUkzJgxqrse5q
+      - MQTT_BROKER=pcai042.informatik.uni-leipzig.de
+      - MQTT_PORT=1883
+      - DB_DATABASE=swt
+      - DB_HOST=192.168.34.154
+      - DB_USER=swt
+      - DB_PASSWORD=iJcLhV8r16IUBw
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.swtbackend.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.swtbackend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
